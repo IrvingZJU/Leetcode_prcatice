@@ -1,54 +1,65 @@
-package Hot100;
+package Hot100.array;
 //给定一个n*n的二维矩阵matrix表示一个图像。请你将图像顺时针旋转90度。你必须在原地旋转图像，这意味着你需要直接修改输入的二维矩阵。
 public class No48_RotateImage {
     public void rotate(int[][] matrix){
         //我的做法一：先把矩阵分为四个方块，然后先把一象限与四象限按90度旋转的值交换，把二象限与三象限交换，
         // 这样一三象限的值已搞定，最后处理二四象限，再交换一次即可。奇偶得分一下
+//        int n= matrix.length;
+//        int num = (n+1)/2; //一、三象限小方块的边长
+//        if (n%2==0) {
+//            for (int i = 0; i < num; i++) {
+//                for (int j = 0; j < num; j++) { //一四象限交换，搞定一
+//                    int temp = matrix[i][j];
+//                    matrix[i][j] = matrix[n - 1 - j][i];
+//                    matrix[n - 1 - j][i] = temp;
+//                }
+//            }
+//            for (int i = num; i < n; i++) {
+//                for (int j = num; j < n; j++) { //二三象限交换，搞定三
+//                    int temp = matrix[i][j];
+//                    matrix[i][j] = matrix[n - 1 - j][i];
+//                    matrix[n - 1 - j][i] = temp;
+//                }
+//            }
+//            for (int i = 0; i < num; i++) {
+//                for (int j = num; j < n; j++) { //二四象限交换，搞定二四
+//                    int temp = matrix[i][j];
+//                    matrix[i][j]=matrix[n-1-i][n-1-j];
+//                    matrix[n-1-i][n-1-j]=temp;
+//                }
+//            }
+//        }else {
+//            for (int i = 0; i < num-1; i++) {
+//                for (int j = 0; j < num; j++) { //一四象限交换
+//                    int temp = matrix[i][j];
+//                    matrix[i][j] = matrix[n - 1 - j][i];
+//                    matrix[n - 1 - j][i] = temp;
+//                }
+//            }
+//            for (int i = num; i < n; i++) {
+//                for (int j = num-1; j < n; j++) { //三二象限交换
+//                    int temp = matrix[i][j];
+//                    matrix[i][j] = matrix[n - 1 - j][i];
+//                    matrix[n - 1 - j][i] = temp;
+//                }
+//            }
+//            for (int i = 0; i < num; i++) {
+//                for (int j = num; j < n; j++) { //二四交换
+//                    int temp = matrix[i][j];
+//                    matrix[i][j]=matrix[n-1-i][n-1-j];
+//                    matrix[n-1-i][n-1-j]=temp;
+//                }
+//            }
+//        }
+        //代码简化：全部两两象限间的交换可以在一个循环体中完成，而且也不用分奇偶
         int n= matrix.length;
-        int num = (n+1)/2; //一、三象限小方块的边长
-        if (n%2==0) {
-            for (int i = 0; i < num; i++) {
-                for (int j = 0; j < num; j++) { //一四象限交换，搞定一
-                    int temp = matrix[i][j];
-                    matrix[i][j] = matrix[n - 1 - j][i];
-                    matrix[n - 1 - j][i] = temp;
-                }
-            }
-            for (int i = num; i < n; i++) {
-                for (int j = num; j < n; j++) { //二三象限交换，搞定三
-                    int temp = matrix[i][j];
-                    matrix[i][j] = matrix[n - 1 - j][i];
-                    matrix[n - 1 - j][i] = temp;
-                }
-            }
-            for (int i = 0; i < num; i++) {
-                for (int j = num; j < n; j++) { //二四象限交换，搞定二四
-                    int temp = matrix[i][j];
-                    matrix[i][j]=matrix[n-1-i][n-1-j];
-                    matrix[n-1-i][n-1-j]=temp;
-                }
-            }
-        }else {
-            for (int i = 0; i < num-1; i++) {
-                for (int j = 0; j < num; j++) { //一四象限交换
-                    int temp = matrix[i][j];
-                    matrix[i][j] = matrix[n - 1 - j][i];
-                    matrix[n - 1 - j][i] = temp;
-                }
-            }
-            for (int i = num; i < n; i++) {
-                for (int j = num-1; j < n; j++) { //三二象限交换
-                    int temp = matrix[i][j];
-                    matrix[i][j] = matrix[n - 1 - j][i];
-                    matrix[n - 1 - j][i] = temp;
-                }
-            }
-            for (int i = 0; i < num; i++) {
-                for (int j = num; j < n; j++) { //二四交换
-                    int temp = matrix[i][j];
-                    matrix[i][j]=matrix[n-1-i][n-1-j];
-                    matrix[n-1-i][n-1-j]=temp;
-                }
+        for (int i=0;i<n/2;i++){
+            for (int j=0;j<(n+1)/2;j++){
+                int temp=matrix[i][j]; //暂存第一象限的值
+                matrix[i][j]=matrix[n-1-j][i]; //4 to 1
+                matrix[n-1-j][i]=matrix[n-1-i][n-1-j]; //3 to 4
+                matrix[n-1-i][n-1-j]=matrix[j][n-1-i]; //2 to 3
+                matrix[j][n-1-i]=temp; //1 to 2
             }
         }
     }
